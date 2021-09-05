@@ -6,12 +6,12 @@ from time import sleep
 from datetime import datetime as dt
 
 #Meu pacotes
-from BD import bd
+from BD import bd as bds
 from Class import my_class as mc
 
 print('\n ========================== Agenda de Contato v2.0 ========================== \n')
 sleep(.5)
-bd = bd.conexao_bd()
+bd = bds.conexao_bd()
 sleep(.5)
 
 try:
@@ -21,7 +21,7 @@ try:
     bd.execute('CREATE DATABASE BD_AGENDA')
 
     # Chamada da Função que cria um tabela usuario
-    sql.tabela_user()
+    bd.tabela_user()
 
     print('\n---- Agenda esta sendo configurada ----\n')
     sleep(2)
@@ -135,27 +135,15 @@ except psql.err.ProgrammingError:
 
                     # Opção Criar Usuario
                     if opc == 1:
-                        conn = psql.connect(
-                            host='localhost',
-                            user='root',
-                            password='1234',
-                            database='BD_AGENDA'
-                        )
-
-                        cursor = conn.cursor()
-
                         nome = str(input('Nome do(a) usuario(a): '))
                         senha = str(input('Senha do(a) usuario(a): '))
                         tipo = str(input('Tipo de usuario(a): AMD/CSL'))
 
-                        usuario = mc.Usuario(nome, senha, tipo)
+                        # Objeto usuario
+                        user = mc.Usuario(nome, senha, tipo)
 
-                        cursor.execute("INSERT INTO USUARIO (NOME, SENHA, TIPO) VALUES(%s, %s, %s);",
-                                       (usuario.nome(), usuario.senha(), usuario.tipo()))
-
-                        conn.commit()
-                        print(cursor.rowcount, 'Usuario(s) inserido com sucesso. ')
-                        cursor.close()
+                        # inserção do objeto no banco
+                        bds.inserir_usuario(user.nome(), user.senha(), user.tipo())
 
                         principal()
 
