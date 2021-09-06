@@ -41,6 +41,28 @@ def tabela_user():
     return tab
 
 
+# Criação da tabela contatos
+def tabela_contatos():
+    """
+    Função que tem como objetivo a criação da tabela usuario
+    """
+    tab = conexao_bd()
+    # ACESSA O BANCO BD_AGENDA
+    tab.execute('USE BD_AGENDA')
+
+    # Cria uma tabela chamada de USUARIO no Banco BD_Agenda
+    tab.execute("CREATE TABLE CONTATOS("
+                "IDCONTATO INT PRIMARY KEY AUTO_INCREMENT, "
+                "NOME VARCHAR(30) NOT NULL,"
+                "EMAIL VARCHAR(15),"
+                "TELEFONE CHAR(3) NOT NULL,"
+                "ID_USUARIO INT NOT NULL, "
+                "FOREIGN KEY(ID_USUARIO) "
+                "REFERENCES USUARIO(IDUSUARIO)")
+
+    return tab
+
+
 # Inserção de usuarios
 def inserir_usuario(nome, senha, tipo):
     """
@@ -87,12 +109,12 @@ def inserir_contato(nome, email, tel, id_u):
         host='localhost',
         user='root',
         password='1234',
-        database='BD_AGENDA_TESTE'
+        database='BD_AGENDA'
 
     )
 
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO CONTATOS_TS(NOME, EMAIL, TELEFOENE, ID_USUARIO) VALUES(%s, %s, %s, %s);",
+    cursor.execute("INSERT INTO CONTATOS(NOME_CONT, EMAIL, TELEFONE, ID_USUARIO) VALUES(%s, %s, %s, %s);",
                    (nome, email, tel, id_u))
 
     conn.commit()

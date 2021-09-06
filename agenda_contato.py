@@ -84,7 +84,34 @@ except psql.err.ProgrammingError:
 
                             # Inserir Contatos
                             elif opc_sub == 2:
-                                pass
+
+                                # tab_cont -> tabela contatos
+                                tab_cont = bds.conexao_bd()
+
+                                # ACESSANDO BD_AGENDA
+                                tab_cont.execute('USE BD_AGENDA')
+
+                                # variavel que recebe como valor
+                                # o nome do usuario
+                                nome_user = nome
+
+                                # Queri que busca o id do usuario conparando com o nome do mesmo
+                                # guardado na variavel 'nome_user'
+                                tab_cont.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+
+                                # Inserindo contatos
+                                for i in tab_cont:
+                                    try:
+                                        bds.inserir_contato('dani', 'dani@hotmail.com', '4455667', i)
+
+                                    except psql.err.ProgrammingError:
+                                        sleep(.5)
+                                        # OBS transferir para o o inicio junto com a criação
+                                        # do BD_AGENDA
+                                        bds.tabela_contatos()
+                                        sleep(.5)
+
+                                        # bds.inserir_contato('rose', 'rose@gmail.com', '6677778', i)
 
                             # Buscar Contatos
                             elif opc_sub == 3:
