@@ -27,18 +27,18 @@ def tabela_user():
     """
     Função que tem como objetivo a criação da tabela usuario
     """
-    tab = conexao_bd()
+    tab_user = conexao_bd()
     # ACESSA O BANCO BD_AGENDA
-    tab.execute('USE BD_AGENDA')
+    tab_user.execute('USE BD_AGENDA')
 
     # Cria uma tabela chamada de USUARIO no Banco BD_Agenda
-    tab.execute("CREATE TABLE USUARIO("
-                "IDUSUARIO INT PRIMARY KEY AUTO_INCREMENT, "
-                "NOME VARCHAR(30) NOT NULL,"
-                "SENHA VARCHAR(15) NOT NULL,"
-                "TIPO CHAR(3) NOT NULL)")
+    tab_user.execute("CREATE TABLE USUARIO("
+                     "IDUSUARIO INT PRIMARY KEY AUTO_INCREMENT, "
+                     "NOME VARCHAR(30) NOT NULL,"
+                     "SENHA VARCHAR(15) NOT NULL,"
+                     "TIPO CHAR(3) NOT NULL)")
 
-    return tab
+    return tab_user
 
 
 # Criação da tabela contatos
@@ -46,21 +46,16 @@ def tabela_contatos():
     """
     Função que tem como objetivo a criação da tabela usuario
     """
-    tab = conexao_bd()
+    tab_cont = conexao_bd()
     # ACESSA O BANCO BD_AGENDA
-    tab.execute('USE BD_AGENDA')
+    tab_cont.execute('USE BD_AGENDA')
 
     # Cria uma tabela chamada de USUARIO no Banco BD_Agenda
-    tab.execute("CREATE TABLE CONTATOS("
-                "IDCONTATO INT PRIMARY KEY AUTO_INCREMENT, "
-                "NOME VARCHAR(30) NOT NULL,"
-                "EMAIL VARCHAR(15),"
-                "TELEFONE CHAR(3) NOT NULL,"
-                "ID_USUARIO INT NOT NULL, "
-                "FOREIGN KEY(ID_USUARIO) "
-                "REFERENCES USUARIO(IDUSUARIO)")
+    tab_cont.execute("CREATE TABLE CONTATOS(IDCONTATOS INT PRIMARY KEY AUTO_INCREMENT,NOME_CONT VARCHAR(30) NOT NULL,"
+                     "EMAIL VARCHAR(15),TELEFONE VARCHAR(15) NOT NULL,ID_USUARIO INT NOT NULL,FOREIGN KEY("
+                     "ID_USUARIO)REFERENCES USUARIO(IDUSUARIO))")
 
-    return tab
+    return tab_cont
 
 
 # Inserção de usuarios

@@ -5,23 +5,33 @@ import pymysql as psql
 from time import sleep
 from datetime import datetime as dt
 
-#Meu pacotes
-from BD import bd as bds
+# Meu pacotes
+from BD import bd
 from Class import my_class as mc
 
 print('\n ========================== Agenda de Contato v2.0 ========================== \n')
 sleep(.5)
-bd = bds.conexao_bd()
+conn = bd.conexao_bd()
 sleep(.5)
 
 try:
+    # Executado no primeiro usu do programa
+    # Criação do Banco
+    # Criação das tabelas Usuario e Contatos
     sleep(1)
 
     # CRIA UM BANCO CHAMADO BD_AGENDA
-    bd.execute('CREATE DATABASE BD_AGENDA')
+    conn.execute('CREATE DATABASE BD_AGENDA')
+    sleep(.5)
+
+    # Chamada da criação da tabela Usuario
+    bd.tabela_user()
+    sleep(.5)
+
+    # Chamada da criação da tabela Contatos
+    bd.tabela_contatos()
 
     # Chamada da Função que cria um tabela usuario
-    bd.tabela_user()
 
     print('\n---- Agenda esta sendo configurada ----\n')
     sleep(2)
@@ -34,7 +44,7 @@ except psql.err.ProgrammingError:
         print(' ------------ Login ------------ ')
 
         # Execução do banco
-        bd.execute('USE BD_AGENDA')
+        conn.execute('USE BD_AGENDA')
 
         nome = input('Usuario: ')
         senha = input('Senha: ')
@@ -45,7 +55,7 @@ except psql.err.ProgrammingError:
         concat = checar + formatacao
 
         # Verifica se o concat é verdadeiro
-        if bd.execute(concat):
+        if conn.execute(concat):
 
             def menu():
                 """
@@ -54,7 +64,7 @@ except psql.err.ProgrammingError:
                 """
 
                 # Estetica que mostar uma mensagem de boas vindas
-                for i in bd:
+                for i in conn:
                     print(f'Seja bem vindo(a) {i[0]}! ')
 
                 print('\n----------- Menu -------------\n')
@@ -80,38 +90,67 @@ except psql.err.ProgrammingError:
 
                             # Mostar Contatos
                             if opc_sub == 1:
-                                pass
+                                con = bd.conexao_bd()
+                                con.execute('USE BD_AGENDA')
+
+                                # OBS contatos acessivel a todos
+                                nome_user = nome
+                                con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+
+                                for i in con:
+                                    # Comando de projeção dos dados
+                                    con.execute("SELECT NOME_CONT, EMAIL, TELEFONE FROM CONTATOS WHERE ID_USUARIO =%s;",
+                                                i[0])
+                                    # Loop que projeta uma Queris com os contatos
+                                    # do usuario.
+                                    for c in con:
+                                        print(c)
+
+                                menu()
 
                             # Inserir Contatos
                             elif opc_sub == 2:
 
-                                # tab_cont -> tabela contatos
-                                tab_cont = bds.conexao_bd()
+                                print('------- Inserir Contatos --------')
 
-                                # ACESSANDO BD_AGENDA
-                                tab_cont.execute('USE BD_AGENDA')
+                                nome_cont = str(input('Nome: ')).title()
+                                email_cont = str(input('email: '))
+                                tel_cont = str(input('Telefone: '))
+                                print(f'\n----------- Confirmar -----------\n'
+                                      f'Nome: {nome_cont}\n'
+                                      f'Email: {email_cont}\n'
+                                      f'Telefone: {tel_cont}\n'
+                                      f'------------------------------------')
 
-                                # variavel que recebe como valor
-                                # o nome do usuario
-                                nome_user = nome
+                                inserir = str(input(f'Inserir? S/N: '))
 
-                                # Queri que busca o id do usuario conparando com o nome do mesmo
-                                # guardado na variavel 'nome_user'
-                                tab_cont.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+                                if inserir == 's' or inserir == 'S':
+                                    # tab_cont -> tabela contatos
+                                    con = bd.conexao_bd()
 
-                                # Inserindo contatos
-                                for i in tab_cont:
-                                    try:
-                                        bds.inserir_contato('dani', 'dani@hotmail.com', '4455667', i)
+                                    # ACESSANDO BD_AGENDA
+                                    con.execute('USE BD_AGENDA')
 
-                                    except psql.err.ProgrammingError:
-                                        sleep(.5)
-                                        # OBS transferir para o o inicio junto com a criação
-                                        # do BD_AGENDA
-                                        bds.tabela_contatos()
-                                        sleep(.5)
+                                    # variavel que recebe como valor
+                                    # o nome do usuario
+                                    nome_user = nome
 
-                                        # bds.inserir_contato('rose', 'rose@gmail.com', '6677778', i)
+                                    # Queri que busca o id do usuario conparando com o nome do mesmo
+                                    # guardado na variavel 'nome_user'
+                                    con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+
+                                    # Inserindo contatos
+                                    for i in con:
+                                        # print(i)
+                                        bd.inserir_contato(nome_cont, email_cont, tel_cont, i[0])
+
+                                    sleep(.5)
+                                    menu()
+
+                                elif inserir == 'n' or inserir == 'N':
+                                    print('Inserção cancelada.\n')
+                                    sleep(.5)
+                                    menu()
 
                             # Buscar Contatos
                             elif opc_sub == 3:
@@ -170,7 +209,7 @@ except psql.err.ProgrammingError:
                         user = mc.Usuario(nome, senha, tipo)
 
                         # inserção do objeto no banco
-                        bds.inserir_usuario(user.nome(), user.senha(), user.tipo())
+                        bd.inserir_usuario(user.nome(), user.senha(), user.tipo())
 
                         principal()
 
