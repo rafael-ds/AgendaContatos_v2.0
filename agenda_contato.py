@@ -46,187 +46,226 @@ except psql.err.ProgrammingError:
         # Execução do banco
         conn.execute('USE BD_AGENDA')
 
-        nome = input('Usuario: ')
-        senha = input('Senha: ')
+        try:
+            acessar = int(input('1 - Entrar | 2 - Criar Usuario: '))
 
-        # Formatação para iterar com o Banco
-        formatacao = '\'' + nome + '\'' + 'AND SENHA=' + '\'' + senha + '\''
-        checar = """SELECT NOME FROM USUARIO WHERE NOME="""
-        concat = checar + formatacao
+            if acessar == 1:
+                nome = input('Usuario: ')
+                senha = input('Senha: ')
 
-        # Verifica se o concat é verdadeiro
-        if conn.execute(concat):
+                # Formatação para iterar com o Banco
+                formatacao = '\'' + nome + '\'' + 'AND SENHA=' + '\'' + senha + '\''
+                checar = """SELECT NOME FROM USUARIO WHERE NOME="""
+                concat = checar + formatacao
 
-            def menu():
-                """
-                Função que tem como objetivo
-                acesso aos contatos e configuração
-                """
+                # Verifica se o concat é verdadeiro
+                if conn.execute(concat):
 
-                # Estetica que mostar uma mensagem de boas vindas
-                for i in conn:
-                    print(f'Seja bem vindo(a) {i[0]}! ')
+                    def menu():
+                        """
+                        Função que tem como objetivo
+                        acesso aos contatos e configuração
+                        """
 
-                print('\n----------- Menu -------------\n')
-                print('1 - Meus contatos | 2 - Configurações | 3 - Sair')
+                        # Estetica que mostar uma mensagem de boas vindas
+                        for i in conn:
+                            print(f'Seja bem vindo(a) {i[0]}! ')
 
-                try:
-                    opc_menu = int(input('Entre com a opção: '))
-
-                    # Opção Meus Contatos
-                    if opc_menu == 1:
-                        print('\n--------------------------------------\n')
-                        print('1 - Mostrar Contatos.\n'
-                              '2 - Inserir Contatos.\n'
-                              '3 - Buscar por Contato.\n'
-                              '4 - Alterar Contato.\n'
-                              '5 - Excluir Contato.\n'
-                              '6 - Limpar Agenda.\n'
-                              '7 - Sair\n')
-                        print('--------------------------------------\n')
+                        print('\n----------- Menu -------------\n')
+                        print('1 - Meus contatos | 2 - Configurações | 3 - Sair')
 
                         try:
-                            opc_sub = int(input('Entre com a opção: '))
+                            opc_menu = int(input('Entre com a opção: '))
 
-                            # Mostar Contatos
-                            if opc_sub == 1:
-                                con = bd.conexao_bd()
-                                con.execute('USE BD_AGENDA')
+                            # Opção Meus Contatos
+                            if opc_menu == 1:
+                                print('\n--------------------------------------\n')
+                                print('1 - Mostrar Contatos.\n'
+                                      '2 - Inserir Contatos.\n'
+                                      '3 - Buscar por Contato.\n'
+                                      '4 - Alterar Contato.\n'
+                                      '5 - Excluir Contato.\n'
+                                      '6 - Limpar Agenda.\n'
+                                      '7 - Sair\n')
+                                print('--------------------------------------\n')
 
-                                # OBS contatos acessivel a todos
-                                nome_user = nome
-                                con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+                                try:
+                                    opc_sub = int(input('Entre com a opção: '))
 
-                                for i in con:
-                                    # Comando de projeção dos dados
-                                    con.execute("SELECT NOME_CONT, EMAIL, TELEFONE FROM CONTATOS WHERE ID_USUARIO =%s;",
+                                    # Mostar Contatos
+                                    if opc_sub == 1:
+                                        con = bd.conexao_bd()
+                                        con.execute('USE BD_AGENDA')
+
+                                        # OBS contatos acessivel a todos
+                                        nome_user = nome
+                                        con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+
+                                        for i in con:
+                                            # Comando de projeção dos dados
+                                            con.execute(
+                                                "SELECT NOME_CONT, EMAIL, TELEFONE FROM CONTATOS WHERE ID_USUARIO =%s;",
                                                 i[0])
-                                    # Loop que projeta uma Queris com os contatos
-                                    # do usuario.
-                                    for c in con:
-                                        print(c)
 
-                                menu()
+                                            # Loop que projeta uma Queris com os contatos
+                                            # do usuario.
+                                            print('-------- Meus Contatos -----------\n')
+                                            print(' Nome |-| Email |-| Telefone ')
+                                            sleep(.5)
+                                            for c in con:
+                                                print(f' {c[0]} -- {c[1]} -- {c[2]} ')
 
-                            # Inserir Contatos
-                            elif opc_sub == 2:
+                                        menu()
 
-                                print('------- Inserir Contatos --------')
+                                    # Inserir Contatos
+                                    elif opc_sub == 2:
 
-                                nome_cont = str(input('Nome: ')).title()
-                                email_cont = str(input('email: '))
-                                tel_cont = str(input('Telefone: '))
-                                print(f'\n----------- Confirmar -----------\n'
-                                      f'Nome: {nome_cont}\n'
-                                      f'Email: {email_cont}\n'
-                                      f'Telefone: {tel_cont}\n'
-                                      f'------------------------------------')
+                                        print('------- Inserir Contatos --------')
 
-                                inserir = str(input(f'Inserir? S/N: '))
+                                        nome_cont = str(input('Nome: ')).title()
+                                        email_cont = str(input('email: '))
+                                        tel_cont = str(input('Telefone: '))
+                                        print(f'\n----------- Confirmar -----------\n'
+                                              f'Nome: {nome_cont}\n'
+                                              f'Email: {email_cont}\n'
+                                              f'Telefone: {tel_cont}\n'
+                                              f'------------------------------------')
 
-                                if inserir == 's' or inserir == 'S':
-                                    # tab_cont -> tabela contatos
-                                    con = bd.conexao_bd()
+                                        inserir = str(input(f'Inserir? S/N: '))
 
-                                    # ACESSANDO BD_AGENDA
-                                    con.execute('USE BD_AGENDA')
+                                        if inserir == 's' or inserir == 'S':
+                                            # tab_cont -> tabela contatos
+                                            con = bd.conexao_bd()
 
-                                    # variavel que recebe como valor
-                                    # o nome do usuario
-                                    nome_user = nome
+                                            # ACESSANDO BD_AGENDA
+                                            con.execute('USE BD_AGENDA')
 
-                                    # Queri que busca o id do usuario conparando com o nome do mesmo
-                                    # guardado na variavel 'nome_user'
-                                    con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
+                                            # variavel que recebe como valor
+                                            # o nome do usuario
+                                            nome_user = nome
 
-                                    # Inserindo contatos
-                                    for i in con:
-                                        # print(i)
-                                        bd.inserir_contato(nome_cont, email_cont, tel_cont, i[0])
+                                            # Queri que busca o id do usuario conparando com o nome do mesmo
+                                            # guardado na variavel 'nome_user'
+                                            con.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_user)
 
-                                    sleep(.5)
-                                    menu()
+                                            # Inserindo contatos
+                                            for i in con:
+                                                # print(i)
+                                                bd.inserir_contato(nome_cont, email_cont, tel_cont, i[0])
 
-                                elif inserir == 'n' or inserir == 'N':
-                                    print('Inserção cancelada.\n')
-                                    sleep(.5)
-                                    menu()
+                                            sleep(.5)
+                                            menu()
 
-                            # Buscar Contatos
-                            elif opc_sub == 3:
+                                        elif inserir == 'n' or inserir == 'N':
+                                            print('Inserção cancelada.\n')
+                                            sleep(.5)
+                                            menu()
+
+                                    # Buscar Contatos
+                                    elif opc_sub == 3:
+                                        # Acessando Foregn Key do usuario
+
+                                        def id_user():
+                                            nome_usuario = nome
+
+                                            conn.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_usuario)
+                                            for i in conn:
+                                                return i[0]
+
+                                        def contatos():
+                                            id_u = id_user()
+                                            conn.execute("SELECT NOME_CONT, EMAIL, TELEFONE FROM CONTATOS WHERE "
+                                                         "ID_USUARIO =%s;", id_u)
+
+                                            return conn
+
+                                        nome_cont = input('Nome Contato: ').title()
+
+                                        for i in contatos():
+                                            if i[0] == nome_cont:
+                                                print('-------- Contato -----------\n')
+                                                print(' Nome |---| Email |---| Telefone ')
+                                                sleep(.5)
+                                                print(f' {i[0]} -- {i[1]} -- {i[2]} ')
+
+                                        menu()
+
+                                    # Alterar Contatos
+                                    elif opc_sub == 4:
+                                        pass
+
+                                    # Excuir Contatos
+                                    elif opc_sub == 5:
+                                        pass
+
+                                    # Limpar Agenda
+                                    elif opc_sub == 6:
+                                        pass
+
+                                    # Sair
+                                    elif opc_sub == 7:
+                                        sleep(1)
+                                        principal()
+
+                                except ValueError:
+                                    print('Por favor insira um valor numérico:\n')
+
+                            # Opção Cnfiguração
+                            elif opc_menu == 2:
                                 pass
 
-                            # Alterar Contatos
-                            elif opc_sub == 4:
-                                pass
-
-                            # Excuir Contatos
-                            elif opc_sub == 5:
-                                pass
-
-                            # Limpar Agenda
-                            elif opc_sub == 6:
-                                pass
-
-                            # Sair
-                            elif opc_sub == 7:
-                                sleep(1)
+                            # Opção Sair
+                            elif opc_menu == 3:
+                                sleep(.5)
                                 principal()
 
                         except ValueError:
                             print('Por favor insira um valor numérico:\n')
 
-                    # Opção Cnfiguração
-                    elif opc_menu == 2:
-                        pass
+                    menu()
 
-                    # Opção Sair
-                    elif opc_menu == 3:
-                        sleep(.5)
-                        principal()
+                else:
+                    print('* Usuario ou senha incorreta.')
+                    sleep(.5)
+                    principal()
 
-                except ValueError:
-                    print('Por favor insira um valor numérico:\n')
+            elif acessar == 2:
+                print('1 - Criar Usuario | 2 - Login | 3 - Sair')
 
-            menu()
+                while True:
+                    try:
+                        # senha = input('Senha de acesso do BD')
+                        opc = int(input('Entre com a opção: '))
 
-        else:
-            print('Usuario não encontrado.\n')
-            print('1 - Criar Usuario | 2 - Login | 3 - Sair')
+                        # Opção Criar Usuario
+                        if opc == 1:
+                            nome = str(input('Nome do(a) usuario(a): '))
+                            senha = str(input('Senha do(a) usuario(a): '))
+                            tipo = str(input('Tipo de usuario(a): AMD/CSL'))
 
-            while True:
-                try:
-                    # senha = input('Senha de acesso do BD')
-                    opc = int(input('Entre com a opção: '))
+                            # Objeto usuario
+                            user = mc.Usuario(nome, senha, tipo)
 
-                    # Opção Criar Usuario
-                    if opc == 1:
-                        nome = str(input('Nome do(a) usuario(a): '))
-                        senha = str(input('Senha do(a) usuario(a): '))
-                        tipo = str(input('Tipo de usuario(a): AMD/CSL'))
+                            # inserção do objeto no banco
+                            bd.inserir_usuario(user.nome(), user.senha(), user.tipo())
 
-                        # Objeto usuario
-                        user = mc.Usuario(nome, senha, tipo)
+                            sleep(1)
+                            principal()
 
-                        # inserção do objeto no banco
-                        bd.inserir_usuario(user.nome(), user.senha(), user.tipo())
+                        # Opção Login
+                        elif opc == 2:
+                            sleep(.5)
+                            principal()
 
-                        principal()
+                        # Opção Sair
+                        elif opc == 3:
+                            sleep(.7)
+                            exit(0)
 
-                    # Opção Login
-                    elif opc == 2:
-                        sleep(.5)
-                        principal()
+                    except ValueError:
+                        print('Por favor insira um valor numérico:\n ')
 
-                    # Opção Sair
-                    elif opc == 3:
-                        sleep(.7)
-                        exit(0)
-
-                except ValueError:
-                    print('Por favor insira um valor numérico:\n ')
+        except ValueError:
+            print('Por favor insira um valor numérico:\n')
 
     principal()
-
-
-
