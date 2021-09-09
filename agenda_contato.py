@@ -8,6 +8,7 @@ from datetime import datetime as dt
 # Meu pacotes
 from BD import bd
 from Class import my_class as mc
+from Queries import queries
 
 print('\n ========================== Agenda de Contato v2.0 ========================== \n')
 sleep(.5)
@@ -163,17 +164,10 @@ except psql.err.ProgrammingError:
 
                                     # Buscar Contatos
                                     elif opc_sub == 3:
-                                        # Acessando Foregn Key do usuario
 
-                                        def id_user():
-                                            nome_usuario = nome
-
-                                            conn.execute("SELECT IDUSUARIO FROM USUARIO WHERE NOME =%s;", nome_usuario)
-                                            for i in conn:
-                                                return i[0]
-
+                                        # Função que busca um contatos expecifico
                                         def contatos():
-                                            id_u = id_user()
+                                            id_u = queries.id_user(nome)
                                             conn.execute("SELECT NOME_CONT, EMAIL, TELEFONE FROM CONTATOS WHERE "
                                                          "ID_USUARIO =%s;", id_u)
 
@@ -192,8 +186,9 @@ except psql.err.ProgrammingError:
 
                                     # Alterar Contatos
                                     elif opc_sub == 4:
+                                        print('----------- Alterar Contatos ---------\n')
+                                        # alterar = input('1 - Alterar N')
                                         pass
-
                                     # Excuir Contatos
                                     elif opc_sub == 5:
                                         pass
