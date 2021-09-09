@@ -187,8 +187,78 @@ except psql.err.ProgrammingError:
                                     # Alterar Contatos
                                     elif opc_sub == 4:
                                         print('----------- Alterar Contatos ---------\n')
-                                        # alterar = input('1 - Alterar N')
-                                        pass
+
+                                        try:
+                                            alter = int(input('1 - Alterar nome | 2 - Alterar email | 3 - Alterar '
+                                                              'telefone'))
+
+                                            if alter == 1:
+                                                print('\n----------- Alterar Nome ---------\n')
+
+                                                nome_cont = input('Informe o nome do contato a ser alterado: ')
+                                                novo_nome = input('Novo nome: ').title()
+
+                                                print('\n----------- Confirmar Alterações ---------\n')
+
+                                                conf = input(f'Nome do Contato: {nome_cont}\n'
+                                                             f'Novo Nome: {novo_nome}\n'
+                                                             f'S/N')
+
+                                                if conf == 's' or conf == 'S':
+                                                    sleep(.5)
+                                                    queries.mod_nome(novo_nome, nome_cont, queries.id_user(nome))
+
+                                                    menu()
+
+                                                elif conf == 'n' or conf == 'N':
+                                                    sleep(.5)
+                                                    menu()
+
+                                                print('----------------------------------\n')
+
+                                            elif alter == 2:
+                                                print('\n----------- Alterar Email ---------\n')
+
+                                                nome_cont = input('Informe o nome do contato: ')
+                                                novo_email = input('Novo email: ')
+
+                                                conf = input(f'Nome do Contato: {nome_cont}\n'
+                                                             f'Novo Email: {novo_email}\n'
+                                                             f'S/N')
+
+                                                if conf == 's' or conf == 'S':
+                                                    sleep(.5)
+                                                    queries.mod_email(novo_email, nome_cont, queries.id_user(nome))
+
+                                                    menu()
+
+                                                elif conf == 'n' or conf == 'N':
+                                                    sleep(.5)
+                                                    menu()
+
+                                            elif alter == 3:
+                                                print('\n----------- Alterar Numero ---------\n')
+
+                                                nome_cont = input('Informe o nome do contato: ')
+                                                novo_tel = input('Novo numero: ')
+
+                                                conf = input(f'Nome do Contato: {nome_cont}\n'
+                                                             f'Novo Telefone: {novo_tel}\n'
+                                                             f'S/N')
+
+                                                if conf == 's' or conf == 'S':
+                                                    sleep(.5)
+                                                    queries.mod_email(novo_tel, nome_cont, queries.id_user(nome))
+
+                                                    menu()
+
+                                                elif conf == 'n' or conf == 'N':
+                                                    sleep(.5)
+                                                    menu()
+
+                                        except ValueError:
+                                            print('Por favor insira um valor numérico:\n')
+
                                     # Excuir Contatos
                                     elif opc_sub == 5:
                                         pass
