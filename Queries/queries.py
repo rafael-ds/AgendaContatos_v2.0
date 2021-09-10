@@ -26,7 +26,7 @@ def id_user(n):
         return i[0]
 
 
-def mod_nome(novo_cont, nome_cont, id_us):
+def update_nome(novo_cont, nome_cont, id_us):
     update_user = "UPDATE CONTATOS SET NOME_CONT =%s WHERE NOME_CONT =%s AND ID_USUARIO =%s"
     dados = (novo_cont, nome_cont, id_us)
 
@@ -36,7 +36,7 @@ def mod_nome(novo_cont, nome_cont, id_us):
     cursor.close()
 
 
-def mod_email(novo_email, nome_cont, id_):
+def update_email(novo_email, nome_cont, id_):
     update_user = "UPDATE CONTATOS SET EMAIL =%s WHERE NOME_CONT =%s AND ID_USUARIO =%s"
     dados = (novo_email, nome_cont, id_)
 
@@ -46,7 +46,7 @@ def mod_email(novo_email, nome_cont, id_):
     cursor.close()
 
 
-def mod_tel(tel, nome, id_):
+def update_tel(tel, nome, id_):
     update_user = "UPDATE CONTATOS SET TELEFONE =%s WHERE NOME_CONT =%s AND ID_USUARIO =%s"
     dados = (tel, nome, id_)
 
@@ -54,3 +54,26 @@ def mod_tel(tel, nome, id_):
     conn.commit()
     print(cursor.rowcount, 'Usuario(s) modificados com sucesso.')
     cursor.close()
+
+
+def delete_contatos(nome, id_usuario):
+    delete = "DELETE FROM CONTATOS WHERE NOME_CONT =%s AND ID_USUARIO =%s"
+    dados = (nome, id_usuario)
+
+    cursor.execute(delete, dados)
+
+    conn.commit()
+    print(cursor.rowcount, 'Usuario(s) excluido com sucesso.')
+    cursor.close()
+
+
+def apagar_reg(id_usuario):
+    apagar = "DELETE FROM CONTATOS WHERE ID_USUARIO = %s"
+    dados = id_usuario
+
+    cursor.execute(apagar, dados)
+
+    conn.commit()
+    print(cursor.rowcount, 'Dados excluido com sucesso.')
+    cursor.close()
+

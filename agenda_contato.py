@@ -206,7 +206,7 @@ except psql.err.ProgrammingError:
 
                                                 if conf == 's' or conf == 'S':
                                                     sleep(.5)
-                                                    queries.mod_nome(novo_nome, nome_cont, queries.id_user(nome))
+                                                    queries.update_nome(novo_nome, nome_cont, queries.id_user(nome))
 
                                                     menu()
 
@@ -228,7 +228,7 @@ except psql.err.ProgrammingError:
 
                                                 if conf == 's' or conf == 'S':
                                                     sleep(.5)
-                                                    queries.mod_email(novo_email, nome_cont, queries.id_user(nome))
+                                                    queries.update_email(novo_email, nome_cont, queries.id_user(nome))
 
                                                     menu()
 
@@ -248,7 +248,7 @@ except psql.err.ProgrammingError:
 
                                                 if conf == 's' or conf == 'S':
                                                     sleep(.5)
-                                                    queries.mod_email(novo_tel, nome_cont, queries.id_user(nome))
+                                                    queries.update_email(novo_tel, nome_cont, queries.id_user(nome))
 
                                                     menu()
 
@@ -261,11 +261,43 @@ except psql.err.ProgrammingError:
 
                                     # Excuir Contatos
                                     elif opc_sub == 5:
-                                        pass
+                                        print('----------- Excluir Contatos ---------\n')
+
+                                        nome_cont = input('Informe o nome do contato: ')
+
+                                        conf = input(f'Excluir o Contato {nome_cont}?\n'
+                                                     f'S/N: \n')
+
+                                        if conf == 's' or conf == 'S':
+                                            sleep(.5)
+                                            queries.delete_contatos(nome_cont, queries.id_user(nome))
+                                            sleep(.5)
+
+                                            menu()
+
+                                        elif conf == 'n' or conf == 'N':
+                                            sleep(.5)
+                                            menu()
 
                                     # Limpar Agenda
                                     elif opc_sub == 6:
-                                        pass
+                                        print('\n----------- Limpar Dados da Agenda ---------\n')
+
+                                        conf = input(f'Deseja limpar a agenda? '
+                                                     f'Todos os contatos serão perdidos permanentemente.\n'
+                                                     f'S/N: ')
+
+                                        if conf == 's' or conf == 'S':
+                                            print('A pagando sua agenda...')
+                                            sleep(1.5)
+                                            queries.apagar_reg(queries.id_user(nome))
+
+                                            sleep(.5)
+                                            menu()
+
+                                        elif conf == 'n' or conf == 'N':
+                                            sleep(.5)
+                                            menu()
 
                                     # Sair
                                     elif opc_sub == 7:
