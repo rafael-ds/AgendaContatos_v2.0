@@ -307,9 +307,28 @@ except psql.err.ProgrammingError:
                                 except ValueError:
                                     print('Por favor insira um valor numérico:\n')
 
-                            # Opção Cnfiguração
+                            # Opção Configuração
                             elif opc_menu == 2:
-                                pass
+
+                                print('------- Alterar Usuarios ----------')
+                                sleep(.5)
+                                queries.config(nome)
+                                sleep(.5)
+                                menu()
+
+                                # conn.execute('USE BD_AGENDA')
+                                #
+                                # admin = "SELECT TIPO USUARIO WHERE NOME=%s AND TIPO=%s"
+                                # tipo_usuario = (nome, 'adm')
+                                #
+                                # conn.execute(admin, tipo_usuario)
+                                #
+                                # if conn:
+                                #     for i in conn:
+                                #         if i[0] == 'adm':
+                                #             print('Acesso permitido')
+                                #         elif i[0] != 'adm':
+                                #             print('Acesso negado. Entre em contato com um administrador')
 
                             # Opção Sair
                             elif opc_menu == 3:
