@@ -1,6 +1,18 @@
 # importando o pyMySQL
 import pymysql as sql
 
+senha = input('Senha do MySQL: ')
+
+conn = sql.connect(
+        host='localhost',
+        user='root',
+        password=senha,
+        database='BD_AGENDA'
+
+    )
+
+cursor = conn.cursor()
+
 
 # Acesso ao MySQL
 def conexao_bd():
@@ -10,12 +22,11 @@ def conexao_bd():
 
     # Pedido de senha caso o acesso ao BD necessite
     # caso contrario so dar ENTER
-    # senha = input('Entre com a senha do banco')
 
     conexao = sql.connect(
         host='localhost',
         user='root',
-        password='1234'
+        password=senha
     )
 
     cursor = conexao.cursor()
@@ -68,21 +79,13 @@ def inserir_usuario(nome, senha, tipo):
     :param tipo:
     :return:
     """
-    conn = sql.connect(
-        host='localhost',
-        user='root',
-        password='1234',
-        database='bd_agenda'
 
-    )
-
-    cursor = conn.cursor()
     cursor.execute("INSERT INTO USUARIO(NOME, SENHA, TIPO) VALUES(%s, %s, %s);",
                    (nome, senha, tipo))
 
     conn.commit()
     print(cursor.rowcount, 'Usuario cadastrado com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 # Inserção de Contatos
@@ -98,17 +101,16 @@ def inserir_contato(nome, email, tel, id_u):
 
     # Pedido de senha caso o acesso ao BD necessite
     # caso contrario so dar ENTER
-    # senha = input('Senha do MySQL: ')
 
-    conn = sql.connect(
-        host='localhost',
-        user='root',
-        password='1234',
-        database='BD_AGENDA'
-
-    )
-
-    cursor = conn.cursor()
+    # conn = sql.connect(
+    #     host='localhost',
+    #     user='root',
+    #     password=senha,
+    #     database='BD_AGENDA'
+    #
+    # )
+    #
+    # cursor = conn.cursor()
     cursor.execute("INSERT INTO CONTATOS(NOME_CONT, EMAIL, TELEFONE, ID_USUARIO) VALUES(%s, %s, %s, %s);",
                    (nome, email, tel, id_u))
 

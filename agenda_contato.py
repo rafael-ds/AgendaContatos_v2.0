@@ -1,6 +1,7 @@
 # RD DevWeb 03 de Setembro 2021
 # Projeto de Agenda de Contatos
 # OBJ academico. Praticar banco de dado MySQL junto a linguagem Python
+
 import pymysql as psql
 from time import sleep
 from datetime import datetime as dt
@@ -315,20 +316,6 @@ except psql.err.ProgrammingError:
                                 queries.config(nome)
                                 sleep(.5)
                                 menu()
-
-                                # conn.execute('USE BD_AGENDA')
-                                #
-                                # admin = "SELECT TIPO USUARIO WHERE NOME=%s AND TIPO=%s"
-                                # tipo_usuario = (nome, 'adm')
-                                #
-                                # conn.execute(admin, tipo_usuario)
-                                #
-                                # if conn:
-                                #     for i in conn:
-                                #         if i[0] == 'adm':
-                                #             print('Acesso permitido')
-                                #         elif i[0] != 'adm':
-                                #             print('Acesso negado. Entre em contato com um administrador')
 
                             # Opção Sair
                             elif opc_menu == 3:

@@ -1,13 +1,15 @@
 # from BD import bd
 import pymysql as sql
+from time import sleep
 
 # conn = bd.conexao_bd()
 # conn.execute('USE BD_AGENDA')
 
+senha = input('Confirme a senha do MySQL: ')
 conn = sql.connect(
     host="localhost",
     user="root",
-    password="1234",
+    password=senha,
     database='bd_agenda'
 )
 cursor = conn.cursor()
@@ -114,7 +116,7 @@ def apagar_reg(id_usuario):
 
     conn.commit()
     print(cursor.rowcount, 'Dados excluido com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 def config(nome):
@@ -136,9 +138,84 @@ def config(nome):
                     opc = int(input('1 - Alterar usuario | 2 - Excluir usuario: '))
 
                     if opc == 1:
-                        pass
+                        try:
+                            alterar = int(input('\n1 - Alterar nome | 2 - Alterar senha | 3 - Alterar tipo'))
+
+                            # Alterando nome de usuario
+                            if alterar == 1:
+                                print('------ Alterar Nome de Usuario ---------\n')
+
+                                nome_user = input('Nome do usuario a ser alterado: ')
+                                novo_nome = input('Novo nome para o usuario.\n').upper()
+
+                                upd = "UPDATE USUARIO SET NOME =%s WHERE NOME =%s;"
+                                dados = (novo_nome, nome_user)
+                                sleep(.5)
+                                cursor.execute(upd, dados)
+
+                                conn.commit()
+                                print(cursor.rowcount, 'Nome do usario(a) alterado com uscesso.')
+                                # cursor.close()
+
+                            # Alterando senha de usuario
+                            elif alterar == 2:
+                                print('\n------ Alterar Senha de Usuario ---------\n')
+
+                                nome_user = input('Nome do usuario a ser alterado: ')
+                                nova_senha = input('Insira uma nova senha: ')
+
+                                upd = "UPDATE USUARIO SET SENHA =%s WHERE NOME =%s;"
+                                dados = (nova_senha, nome_user)
+
+                                sleep(.5)
+                                cursor.execute(upd, dados)
+
+                                conn.commit()
+                                print(cursor.rowcount, 'Senha alterado com uscesso.')
+                                # cursor.close()
+
+                            # Alterando tipo de usuario
+                            elif alterar == 3:
+                                print('\n------ Alterar Tipo de Usuario ---------\n')
+
+                                nome_user = input('Nome de usuario a ser alterado: ')
+                                novo_tipo = input('Insira qual sera o tipo do usuario. ADM/CSL: ').upper()
+
+                                upd = "UPDATE USUARIO SET TIPO =%s WHERE NOME =%s;"
+                                dados = (novo_tipo, nome_user)
+
+                                sleep(.5)
+                                cursor.execute(upd, dados)
+
+                                conn.commit()
+                                print(cursor.rowcount, 'Tipo do usuario alterado com uscesso.')
+                                # cursor.close()
+
+                        except ValueError:
+                            print('Insira um valor numérico. ')
+
                     elif opc == 2:
-                        pass
+                        print('----- Excluir usiario ------\n')
+
+                        nome_user = input('Nome do usuario a ser excluido')
+
+                        deletar = input(f'Deletar usuario {nome_user}?\n'
+                                        f'Todos os dados de {nome_user} serão '
+                                        f'removidos permanentemente.\n'
+                                        f'S/N: ')
+
+                        # Apagando registro do usuario
+                        if deletar == 's' or deletar == 'S':
+                            print('Deletando usuario..')
+                            sleep(1)
+                            # Apagando contatos do usuairo
+                            apagar_reg(id_user(nome_user))
+
+                            dlt = "DELETE FROM USUARIO WHERE NOME =%s;"
+                            # Excluindo o usuario
+                            cursor.execute(dlt, nome_user)
+                            conn.commit()
+                            print(cursor.rowcount, 'Usuario deletado com uscesso.')
 
                 except ValueError:
                     print('Insira um valor numérico. ')
