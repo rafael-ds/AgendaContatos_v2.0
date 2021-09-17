@@ -191,7 +191,7 @@ except psql.err.ProgrammingError:
 
                                         try:
                                             alter = int(input('1 - Alterar nome | 2 - Alterar email | 3 - Alterar '
-                                                              'telefone'))
+                                                              'telefone '))
 
                                             if alter == 1:
                                                 print('\n----------- Alterar Nome ---------\n')
@@ -249,7 +249,7 @@ except psql.err.ProgrammingError:
 
                                                 if conf == 's' or conf == 'S':
                                                     sleep(.5)
-                                                    queries.update_email(novo_tel, nome_cont, queries.id_user(nome))
+                                                    queries.update_tel(novo_tel, nome_cont, queries.id_user(nome))
 
                                                     menu()
 
@@ -370,5 +370,6 @@ except psql.err.ProgrammingError:
 
         except ValueError:
             print('Por favor insira um valor numérico:\n')
+            principal()
 
     principal()

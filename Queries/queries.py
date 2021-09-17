@@ -43,7 +43,7 @@ def update_nome(novo_cont, nome_cont, id_us):
     cursor.execute(update_user, dados)
     conn.commit()
     print(cursor.rowcount, 'Usuario(s) modificados com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 def update_email(novo_email, nome_cont, id_):
@@ -62,7 +62,7 @@ def update_email(novo_email, nome_cont, id_):
     cursor.execute(update_user, dados)
     conn.commit()
     print(cursor.rowcount, 'Usuario(s) modificados com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 def update_tel(tel, nome, id_):
@@ -80,7 +80,7 @@ def update_tel(tel, nome, id_):
     cursor.execute(update_user, dados)
     conn.commit()
     print(cursor.rowcount, 'Usuario(s) modificados com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 def delete_contatos(nome, id_usuario):
@@ -99,7 +99,7 @@ def delete_contatos(nome, id_usuario):
 
     conn.commit()
     print(cursor.rowcount, 'Usuario(s) excluido com sucesso.')
-    cursor.close()
+    # cursor.close()
 
 
 def apagar_reg(id_usuario):
