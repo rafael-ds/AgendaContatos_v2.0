@@ -1,0 +1,26 @@
+=====================================================================================
+				Agenda contato v2.0
+=====================================================================================
+
+
+Projeto Desenvolvido por Rafael Silva com obetivo de desenvolvimento em Python e MySQL
+RD DevWeb 03 de Setembro 2021
+
+github: https://github.com/rafael-ds
+Linkedin: https://www.linkedin.com/in/rafael-ds84/
+
+
+----------------------------------------------------------------------------------
+
+
+Sistema em cmd de agenda de contatos.
+O programa permite a geração de usuários do tipo
+ADM(administradores) e CSL(casuais).
+
+Ambos terão acesso a criação de users com uma agenda 
+de contatos única para cada, com opções de inserir, modifica, excluir, 
+fazer buscas, mostra seus contatos e também limpar sua agenda.
+Somente os ADM poderão fazer alterações e exclusões de contatos.
+
+É necessario ter o MySQL instalado, pois a base de dados foi feita
+no mesmo.
